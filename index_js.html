@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Notas - JavaScript</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        pre { background: #2d2d2d; color: #7fdbca; padding: 15px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h2>Carga de Datos (JavaScript)</h2>
+    <p>Los datos se pedirán mediante ventanas emergentes.</p>
+    <button onclick="ejecutarPrograma()">Comenzar Carga</button>
+
+    <div id="salida"></div>
+
+    <script>
+        function ejecutarPrograma() {
+            let personas = [];
+            let continuar = true;
+
+            while (continuar) {
+                let nombre = prompt("Ingrese Nombre (o escriba 'finalizar'):");
+                
+                if (!nombre || nombre.toLowerCase() === 'finalizar') {
+                    continuar = false;
+                } else {
+                    let edad = parseInt(prompt(`Edad de ${nombre}:`));
+                    let nota = parseFloat(prompt(`Nota de ${nombre}:`));
+                    
+                    if (!isNaN(edad) && !isNaN(nota)) {
+                        personas.push([nombre, edad, nota]); // Estructura de matriz
+                    } else {
+                        alert("Datos inválidos, reintente.");
+                    }
+                }
+            }
+
+            if (personas.length > 0) {
+                mostrarResultados(personas);
+            }
+        }
+
+        function mostrarResultados(lista) {
+            let div = document.getElementById('salida');
+            let suma = lista.reduce((acc, p) => acc + p[2], 0);
+            let promedio = suma / lista.length;
+
+            // Ordenar por nota de mayor a menor
+            let ordenadas = [...lista].sort((a, b) => b[2] - a[2]);
+
+            div.innerHTML = `
+                <h3>Listado Original:</h3>
+                <pre>${lista.map(p => `Nombre: ${p[0]} | Edad: ${p[1]} | Nota: ${p[2]}`).join('\n')}</pre>
+                
+                <h3>Ordenado por Nota (Mayor a Menor):</h3>
+                <pre>${ordenadas.map(p => `Nota: ${p[2]} | Nombre: ${p[0]}`).join('\n')}</pre>
+                
+                <h3>Promedio General: ${promedio.toFixed(2)}</h3>
+            `;
+        }
+    </script>
+</body>
+</html>

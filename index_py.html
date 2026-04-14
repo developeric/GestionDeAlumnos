@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Notas - Python</title>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        #output { background: #f4f4f4; border-left: 5px solid #3776ab; padding: 10px; white-space: pre; }
+    </style>
+</head>
+<body>
+    <h2>Consola de Python en el Navegador</h2>
+    <p>Presiona el botón y revisa los mensajes de entrada en la parte superior del navegador.</p>
+    
+    <button py-click="main">Iniciar Programa Python</button>
+    
+    <div id="output">Los resultados aparecerán aquí...</div>
+
+    <script type="py">
+        from pyscript import display, window
+
+        def main(event):
+            personas = []
+            
+            while True:
+                nombre = window.prompt("Nombre (o 'finalizar'):")
+                
+                if not nombre or nombre.lower() == "finalizar":
+                    break
+                
+                edad = int(window.prompt(f"Edad de {nombre}:"))
+                nota = float(window.prompt(f"Nota de {nombre}:"))
+                
+                personas.append([nombre, edad, nota])
+
+            if personas:
+                # Procesar resultados
+                original = "\n".join([f"Nombre: {p[0]} | Edad: {p[1]} | Nota: {p[2]}" for p in personas])
+                
+                ordenadas = sorted(personas, key=lambda x: x[2], reverse=True)
+                lista_ordenada = "\n".join([f"Nota: {p[2]} | Nombre: {p[0]}" for p in ordenadas])
+                
+                promedio = sum(p[2] for p in personas) / len(personas)
+
+                resultado_final = (
+                    f"LISTADO ORIGINAL:\n{original}\n\n"
+                    f"ORDENADO POR NOTA:\n{lista_ordenada}\n\n"
+                    f"PROMEDIO GENERAL: {promedio:.2f}"
+                )
+                
+                display(resultado_final, target="output")
+    </script>
+</body>
+</html>
